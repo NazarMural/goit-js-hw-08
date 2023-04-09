@@ -11,6 +11,18 @@ const saveFormState = throttle(() => {
   localStorage.setItem('feedback-form-state', JSON.stringify(formData));
 }, 500);
 
+// Функція для перевірки, чи заповнені всі поля форми
+const validateForm = () => {
+  const email = form.email.value.trim();
+  const message = form.message.value.trim();
+
+  if (!email || !message) {
+    alert('Please fill out all fields');
+    return false;
+  }
+  return true;
+};
+
 // Відстеження події input на формі
 form.addEventListener('input', saveFormState);
 
@@ -27,6 +39,10 @@ window.addEventListener('load', () => {
 // Очищення форми та сховища при сабміті
 form.addEventListener('submit', (event) => {
   event.preventDefault();
+
+  if (!validateForm()) {
+    return;
+  }
 
   const formData = {
     email: form.email.value,
